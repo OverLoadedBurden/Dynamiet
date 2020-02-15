@@ -14,8 +14,52 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.shortcuts import HttpResponse
+from django.urls import path, include
+from django.conf.urls import url
+from Admins.models import User
+from json import loads, dumps
+
+
+def auth(name, password):
+    ret = 2
+    u = None
+    try:
+        u = User.objects.get(['name', name])
+        ret -= 1
+        if u.password == password:
+            ret -= 1
+    except Exception:
+        pass
+    return HttpResponse(ret)
+
+
+def get_user(request):
+    return HttpResponse(dumps(User.objects.get(['name', request.GET.get('name')]).serialize()))
+
+
+def auth_route(request):
+    dic = loads(request.body.decode('UTF-8'))
+    return auth(name=dic['name'], password=dic['password'])
+
+
+def create(request):
+    dic = loads(request.body.decode('UTF-8'))
+    User.objects.create(
+        name=dic['name'],
+        password=dic['password'],
+        isAdmin=dic['isAdmin']
+    ).save()
+    return HttpResponse(0)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('lib/', include('Library.urls')),
+    path('std/', include('Students.urls')),
+    path('program/', include('Program.urls')),
+    path('fin/', include('Finance.urls')),
+    path('req/', include('Requests.urls')),
+    url('create/', create),
+    url('auth/', auth_route),
 ]

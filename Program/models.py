@@ -1,10 +1,11 @@
 from django.db import models
 from Students.models import Student
 from json import loads
+from django_serializable_model import SerializableModel
 
 
 # Create your models here.
-class Program(models.Model):
+class Program(SerializableModel):
     name = models.CharField(max_length=30)
     courses = models.TextField()
     degree = models.CharField(max_length=30)
@@ -14,7 +15,7 @@ class Program(models.Model):
         return self.name
 
 
-class ScientificStatues(models.Model):
+class ScientificStatues(SerializableModel):
     std_ref = models.ForeignKey(Student, on_delete=models.CASCADE)
     dep_ref = models.ForeignKey(Program, on_delete=models.CASCADE)
     GPA_details = models.TextField()
@@ -60,7 +61,7 @@ def has_issues(std: Student):
     passed = True
     for sem in gpa:
         for course in sem.keys():
-            passed = passed and (int(sem[course]) > 40)
+            passed = passed and (int(sem[course]) >= 40)
         if not passed:
             break
     return not passed

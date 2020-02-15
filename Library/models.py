@@ -1,10 +1,11 @@
 from django.db import models
 from Students.models import Student
 from json import loads
+from django_serializable_model import SerializableModel
 
 
 # Create your models here.
-class Library(models.Model):
+class Library(SerializableModel):
     ref = models.ForeignKey(Student, on_delete=models.CASCADE)
     in_debt = models.TextField(default='[]')
 

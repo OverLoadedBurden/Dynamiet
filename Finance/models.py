@@ -2,10 +2,11 @@ from django.db import models
 from Students.models import Student
 from json import loads
 from Program.models import Program, ScientificStatues
+from django_serializable_model import SerializableModel
 
 
 # Create your models here.
-class FinanceStatues(models.Model):
+class FinanceStatues(SerializableModel):
     ref = models.ForeignKey(Student, on_delete=models.CASCADE)
     finance_dues = models.TextField()
 
