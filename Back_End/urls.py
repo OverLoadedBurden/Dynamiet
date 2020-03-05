@@ -48,7 +48,6 @@ def create(request):
     User.objects.create(
         name=dic['name'],
         password=dic['password'],
-        isAdmin=dic['isAdmin']
     ).save()
     return HttpResponse(0)
 

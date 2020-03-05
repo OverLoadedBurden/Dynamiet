@@ -183,3 +183,14 @@ books = [
     , 'أسفل قاع المدينة'
     , 'البؤساء'
 ]
+
+
+a = {
+    "title": 'O.U.C',
+    'abstract': 'sadasddfgkkmdslkmkdlsgmklsmfkgmdklfgfmdsfklg',
+    'gpa': 99,
+    'std': {
+        'no': 274289,
+        'name': 'solara'
+    }
+}

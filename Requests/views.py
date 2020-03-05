@@ -1,5 +1,6 @@
 from django.shortcuts import HttpResponse
 from .models import *
+from django.core.serializers import serialize
 from json import loads
 from Program.models import *
 
@@ -24,3 +25,42 @@ def create(request):
     )
     rd.save()
     return HttpResponse('{}'.format(rd.pk))
+
+
+def check(request):
+    id = request.GET.get('id')
+    ret = 3
+    try:
+        r = RequestData.objects.get(id=id)
+        if r.isAccepted is None: ret = 2
+        if not r.isAccepted and r.isAccepted is not None: ret = 1
+        if r.isAccepted: ret = 0
+    except:
+        pass
+    return HttpResponse(ret)
+
+
+def get(request):
+    type = request.GET.get('type')
+    ret = None
+    if type == 'all':
+        ret = (RequestData.objects.all())
+    if type == 'wait':
+        ret = (RequestData.objects.filter(isAccepted=None))
+    if type == 'True':
+        ret = (RequestData.objects.filter(isAccepted=True))
+    if type == 'False':
+        ret = (RequestData.objects.filter(isAccepted=False))
+    return HttpResponse(serialize('json', ret))
+
+
+def handle(request):
+    id = request.GET.get('id')
+    approve = request.GET.get('approve')
+    r = RequestData.objects.get(id=id)
+    if approve == '0':
+        r.isAccepted = True
+    else:
+        r.isAccepted = False
+    r.save()
+    return HttpResponse('0')
