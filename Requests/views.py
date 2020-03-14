@@ -29,12 +29,13 @@ def create(request):
 
 def check(request):
     id = request.GET.get('id')
-    ret = 3
+    ret = 4
     try:
         r = RequestData.objects.get(id=id)
-        if r.isAccepted is None: ret = 2
-        if not r.isAccepted and r.isAccepted is not None: ret = 1
-        if r.isAccepted: ret = 0
+        if r.isAccepted is None: ret = 3
+        if not r.isAccepted and r.isAccepted is not None: ret = 2
+        if r.isAccepted: ret = 1
+        if r.isAccepted and r.credit_card is not None and len(r.credit_card) != 0: ret = 0
     except:
         pass
     return HttpResponse(ret)
@@ -46,9 +47,11 @@ def get(request):
     if type == 'all':
         ret = (RequestData.objects.all())
     if type == 'wait':
+        ret = (RequestData.objects.filter(isAccepted=True, credit_card=None))
+    if type == 'new':
         ret = (RequestData.objects.filter(isAccepted=None))
     if type == 'True':
-        ret = (RequestData.objects.filter(isAccepted=True))
+        ret = (RequestData.objects.filter(isAccepted=True, credit_card__contains=''))
     if type == 'False':
         ret = (RequestData.objects.filter(isAccepted=False))
     return HttpResponse(serialize('json', ret))
@@ -63,4 +66,13 @@ def handle(request):
     else:
         r.isAccepted = False
     r.save()
+    return HttpResponse('0')
+
+
+def pay(request):
+    id = request.GET.get('id')
+    credit = request.GET.get('credit')
+    rd = RequestData.objects.get(id=id)
+    rd.credit_card = credit
+    rd.save()
     return HttpResponse('0')

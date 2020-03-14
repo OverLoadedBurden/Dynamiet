@@ -6,6 +6,6 @@ urlpatterns = [
     url('check', check),
     url('get', get),
     url('handle', handle),
-    # url('by_id', by_id),
+    url('pay', pay),
     url('create', create),
 ]

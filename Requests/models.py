@@ -17,16 +17,18 @@ class RequestData(SerializableModel):
     copies_of_ar = models.IntegerField()
     copies_of_en = models.IntegerField()
     isAccepted = models.BooleanField(default=None, null=True)
-# RequestData.objects.create(
-#     std=Student.objects.get(pk=10),
-#     program=Program.objects.get(pk=1)
-#     ,phone='1000',
-#     email='C@C.C',
-#     year_of_graduation='2020',
-#     name_in_ar='AR',
-#     name_in_en='EN',
-#     cert_type='cert_type',
-#     degree='degree',
-#     copies_of_ar=1,
-#     copies_of_en=2,
-#     )
+    credit_card = models.TextField(null=True, default=None)
+    # RequestData.objects.create(
+    #     std=Student.objects.get(pk=10),
+    #     program=Program.objects.get(pk=1)
+    #     ,phone='1000',
+    #     email='C@C.C',
+    #     year_of_graduation='2020',
+    #     name_in_ar='AR',
+    #     name_in_en='EN',
+    #     cert_type='cert_type',
+    #     degree='degree',
+    #     copies_of_ar=1,
+    #     copies_of_en=2,
+    #     )
+
